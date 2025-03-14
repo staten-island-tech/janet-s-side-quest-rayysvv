@@ -30,18 +30,11 @@ def calcRow(data):
     return row_totals, row_averages
 
 total_sales, average_sales = calcRow(data)
-
 individual_sales = average_sales.items()
 
-""" for sale in individual_sales:
+for sale in individual_sales:
     store, avg = sale
-    print(f"Store: {store}, Average Sales: {avg}") """
-
-def find_most_profitable_store(average_sales):
-    most_profitable_store = max(average_sales, key=average_sales.get)
-    return most_profitable_store, average_sales[most_profitable_store]
-
-profitable = find_most_profitable_store(average_sales)
+    print(f"Store: {store}, Average Sales: {avg}")
 
 def sort_profitable_stores(average_sales):
     sorted_stores = sorted(average_sales.items(), key=lambda x: x[1], reverse=True)
@@ -50,7 +43,20 @@ def sort_profitable_stores(average_sales):
 sorted_stores = sort_profitable_stores(average_sales)
 print(f"Sorted stores by average sales: {sorted_stores}")
 
+def calculate_overall_average(average_sales):
+    total_average_sales = sum(average_sales.values())
+    number_of_stores = len(average_sales)
+    overall_average = total_average_sales / number_of_stores
+    return overall_average
+
+overall_average_sales = calculate_overall_average(average_sales)
+print(f"Overall average sales across all stores: ${overall_average_sales}")
+
 def dangered_stores(average_sales):
-    dangered_stores = {store: avg for store, avg in average_sales.items() if avg < 100}
-    return dangered_stores
+    dangered_stores = {}
+    for store, avg in average_sales.items():
+        if avg < (overall_average_sales * 0.80):
+            dangered_stores[store] = avg
 dangered = dangered_stores(average_sales)
+
+print(f"The stores that are in dangered is: {dangered}")
